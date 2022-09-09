@@ -19,6 +19,7 @@ class HomeController extends GetxController {
     var notes = await _client.from('notes').select().match({
       'user_id': id,
     }).execute();
+
     List<Note> dataNote = Note.fromJsonList(notes.data as List);
     allNotes(dataNote);
     allNotes.refresh();

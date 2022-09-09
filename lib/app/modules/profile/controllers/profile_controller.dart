@@ -5,15 +5,15 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:intl/intl.dart';
 
 class ProfileController extends GetxController {
-  RxBool isPasswordHidden = true.obs;
-  RxBool isLoading = false.obs;
-  RxString lastLogin = '-'.obs;
-
   final TextEditingController nameC = TextEditingController();
   final TextEditingController emailC = TextEditingController();
   final TextEditingController passwordC = TextEditingController();
 
   final SupabaseClient _client = Supabase.instance.client;
+
+  RxBool isPasswordHidden = true.obs;
+  RxBool isLoading = false.obs;
+  RxString lastLogin = '-'.obs;
 
   Future<void> getProfile() async {
     PostgrestResponse<dynamic> response =
@@ -34,9 +34,7 @@ class ProfileController extends GetxController {
 
     lastLogin.value = dateFormat;
 
-    if (kDebugMode) {
-      print(response.toJson());
-    }
+    if (kDebugMode) print(response.toJson());
   }
 
   Future<void> logout() async {
@@ -45,6 +43,8 @@ class ProfileController extends GetxController {
 
   Future<void> updateProfile() async {
     if (nameC.text.isNotEmpty) {
+      FocusManager.instance.primaryFocus?.unfocus();
+
       isLoading.value = true;
       await _client.from('users').update({
         'name': nameC.text,
@@ -61,22 +61,20 @@ class ProfileController extends GetxController {
               UserAttributes(password: passwordC.text),
             );
           } catch (error) {
-            Get.snackbar('Terjadi Kesalahan', error.toString());
+            Get.snackbar('Error', error.toString());
           }
         } else {
           Get.snackbar(
-            'Tidak dapat ganti password',
-            'Password harus lebih dari 6 karakter',
+            'Cannot change password',
+            'Password must be more than 6 characters!',
           );
         }
       }
-
       isLoading.value = false;
-
-      FocusManager.instance.primaryFocus?.unfocus();
-      Get.snackbar('Sukses', 'Data Profile Berhasil Diupdate!');
-
+      Get.snackbar('Success', 'Profile data updated successfully');
       // Get.back();
+    } else {
+      Get.snackbar('Warning', 'The field input cannot be empty!');
     }
   }
 }

@@ -6,14 +6,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../routes/app_pages.dart';
 
 class RegisterController extends GetxController {
-  RxBool isPasswordHidden = true.obs;
-  RxBool isLoading = false.obs;
-
   final TextEditingController nameC = TextEditingController();
   final TextEditingController emailC = TextEditingController();
   final TextEditingController passwordC = TextEditingController();
 
   final SupabaseClient _client = Supabase.instance.client;
+
+  RxBool isPasswordHidden = true.obs;
+  RxBool isLoading = false.obs;
 
   void signUp() async {
     if (nameC.text.isNotEmpty &&
@@ -25,9 +25,7 @@ class RegisterController extends GetxController {
       isLoading.value = false;
 
       if (response.error == null) {
-        if (kDebugMode) {
-          print(response.data?.toJson());
-        }
+        if (kDebugMode) print(response.data?.toJson());
 
         // insert data user -> table user
         await _client.from('users').insert({
@@ -37,7 +35,7 @@ class RegisterController extends GetxController {
           'uid': response.user!.id
         }).execute();
 
-        // tanpa email verfication
+        // without email verfication
         Get.offAllNamed(Routes.home);
 
         // jika ada fitur email verification
@@ -57,10 +55,10 @@ class RegisterController extends GetxController {
         //   ],
         // );
       } else {
-        Get.snackbar('Terjadi kesalahan', response.error!.message);
+        Get.snackbar('Error', response.error!.message);
       }
     } else {
-      Get.snackbar('Terjadi kesalahan', 'Email atau Password masih kosong');
+      Get.snackbar('Warning', 'The field input cannot be empty!');
     }
   }
 }

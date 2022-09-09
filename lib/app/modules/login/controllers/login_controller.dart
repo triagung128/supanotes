@@ -12,7 +12,7 @@ class LoginController extends GetxController {
 
   final SupabaseClient _client = Supabase.instance.client;
 
-  Future<bool?> signIn() async {
+  Future<bool> signIn() async {
     if (emailC.text.isNotEmpty && passwordC.text.isNotEmpty) {
       isLoading.value = true;
       GotrueSessionResponse response = await _client.auth.signIn(
@@ -22,17 +22,14 @@ class LoginController extends GetxController {
       isLoading.value = false;
 
       if (response.error == null) {
-        if (kDebugMode) {
-          print(response.data?.toJson());
-        }
-
+        if (kDebugMode) print(response.data?.toJson());
         return true;
       } else {
-        Get.snackbar('Terjadi kesalahan', response.error!.message);
+        Get.snackbar('Error', response.error!.message);
       }
     } else {
-      Get.snackbar('Terjadi kesalahan', 'Email atau Password masih kosong');
+      Get.snackbar('Warning', 'The field input cannot be empty!');
     }
-    return null;
+    return false;
   }
 }

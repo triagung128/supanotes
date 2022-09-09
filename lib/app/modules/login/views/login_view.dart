@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../controllers/auth_controller.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/login_controller.dart';
-import '../../../controllers/auth_controller.dart';
 
 class LoginView extends GetView<LoginController> {
   LoginView({Key? key}) : super(key: key);
@@ -62,12 +62,14 @@ class LoginView extends GetView<LoginController> {
                 ? null
                 : () async {
                     bool? cekLogin = await controller.signIn();
-                    if (cekLogin != null && cekLogin == true) {
+                    if (cekLogin == true) {
                       await _authC.autoLogout();
                       Get.offAllNamed(Routes.home);
                     }
                   },
-            child: Text(controller.isLoading.isFalse ? 'Login' : 'Loading...'),
+            child: Text(
+              controller.isLoading.isFalse ? 'Login' : 'Loading...',
+            ),
           ),
           const SizedBox(
             height: 8.0,

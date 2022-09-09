@@ -18,7 +18,6 @@ class EditNoteController extends GetxController {
         'description': descriptionC.text,
       }).match({'id': id}).execute();
       isLoading.value = false;
-
       return true;
     } else {
       return false;

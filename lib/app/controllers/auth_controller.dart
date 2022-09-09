@@ -12,9 +12,7 @@ class AuthController extends GetxController {
   final SupabaseClient _client = Supabase.instance.client;
 
   Future<void> autoLogout() async {
-    if (authTimer != null) {
-      authTimer!.cancel();
-    }
+    if (authTimer != null) authTimer!.cancel();
 
     authTimer = Timer(
       const Duration(seconds: 3600),
@@ -24,9 +22,7 @@ class AuthController extends GetxController {
       },
     );
 
-    if (kDebugMode) {
-      print('Auto Logout Dijalankan');
-    }
+    if (kDebugMode) print('Running auto logout');
   }
 
   Future<void> reset() async {
@@ -35,8 +31,6 @@ class AuthController extends GetxController {
       authTimer = null;
     }
 
-    if (kDebugMode) {
-      print('Auto Logout Direset');
-    }
+    if (kDebugMode) print('Auto logout reset');
   }
 }
