@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../controllers/auth_controller.dart';
-import '../../../routes/app_pages.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
-  ProfileView({Key? key}) : super(key: key);
-
-  final _authC = Get.find<AuthController>();
+  const ProfileView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +14,7 @@ class ProfileView extends GetView<ProfileController> {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () async {
-              await controller.logout();
-              await _authC.reset();
-              Get.offAllNamed(Routes.login);
-            },
+            onPressed: () async => await controller.logout(),
             icon: const Icon(Icons.logout),
           ),
         ],
@@ -113,8 +105,6 @@ class ProfileView extends GetView<ProfileController> {
                           if (controller.passwordC.text.isNotEmpty &&
                               controller.passwordC.text.length > 6) {
                             await controller.logout();
-                            await _authC.reset();
-                            Get.offAllNamed(Routes.login);
                           }
                         },
                   child: Text(

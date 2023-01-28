@@ -28,7 +28,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.login,
-      page: () => LoginView(),
+      page: () => const LoginView(),
       binding: LoginBinding(),
     ),
     GetPage(
@@ -38,12 +38,12 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.profile,
-      page: () => ProfileView(),
+      page: () => const ProfileView(),
       binding: ProfileBinding(),
     ),
     GetPage(
       name: _Paths.addNote,
-      page: () => AddNoteView(),
+      page: () => const AddNoteView(),
       binding: AddNoteBinding(),
     ),
     GetPage(

@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../data/models/note_model.dart';
-import '../../home/controllers/home_controller.dart';
 import '../controllers/edit_note_controller.dart';
 
 class EditNoteView extends GetView<EditNoteController> {
   EditNoteView({Key? key}) : super(key: key);
 
-  final homeC = Get.find<HomeController>();
   final Note _note = Get.arguments;
 
   @override
@@ -54,22 +52,7 @@ class EditNoteView extends GetView<EditNoteController> {
             () => ElevatedButton(
               onPressed: controller.isLoading.isTrue
                   ? null
-                  : () async {
-                      bool response = await controller.editNote(_note.id!);
-                      if (response == true) {
-                        Get.snackbar(
-                          'Success',
-                          'Successfully updated data',
-                        );
-                        await homeC.getAllNotes();
-                        Get.back();
-                      } else {
-                        Get.snackbar(
-                          'Warning',
-                          'The field input cannot be empty!',
-                        );
-                      }
-                    },
+                  : () async => await controller.editNote(_note.id!),
               child: Text(
                 controller.isLoading.isFalse ? 'Edit Note' : 'Loading',
               ),

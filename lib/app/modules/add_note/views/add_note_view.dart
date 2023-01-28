@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../home/controllers/home_controller.dart';
 import '../controllers/add_note_controller.dart';
 
 class AddNoteView extends GetView<AddNoteController> {
-  AddNoteView({Key? key}) : super(key: key);
-
-  final homeC = Get.find<HomeController>();
+  const AddNoteView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,22 +46,7 @@ class AddNoteView extends GetView<AddNoteController> {
             () => ElevatedButton(
               onPressed: controller.isLoading.isTrue
                   ? null
-                  : () async {
-                      bool response = await controller.addNote();
-                      if (response == true) {
-                        Get.snackbar(
-                          'Success',
-                          'Successfully added data',
-                        );
-                        await homeC.getAllNotes();
-                        Get.back();
-                      } else {
-                        Get.snackbar(
-                          'Warning',
-                          'The field input cannot be empty!',
-                        );
-                      }
-                    },
+                  : () async => await controller.addNote(),
               child: Text(
                 controller.isLoading.isFalse ? 'Add Note' : 'Loading',
               ),

@@ -2,35 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class AddNoteController extends GetxController {
-  final TextEditingController titleC = TextEditingController();
-  final TextEditingController descriptionC = TextEditingController();
+import '../../home/controllers/home_controller.dart';
 
-  final SupabaseClient _client = Supabase.instance.client;
+class AddNoteController extends GetxController {
+  final _client = Supabase.instance.client;
+  final _homeC = Get.find<HomeController>();
+
+  final titleC = TextEditingController();
+  final descriptionC = TextEditingController();
 
   RxBool isLoading = false.obs;
 
-  Future<bool> addNote() async {
+  Future<void> addNote() async {
     if (titleC.text.isNotEmpty && descriptionC.text.isNotEmpty) {
       isLoading.value = true;
-      PostgrestResponse<dynamic> user =
-          await _client.from('users').select('id').match({
-        'uid': _client.auth.currentUser!.id,
-      }).execute();
 
-      int id = (user.data as List).first['id'];
+      final user = await _client.from('users').select('id').match({
+        'uid': _client.auth.currentUser!.id,
+      });
+
+      int id = (user as List).first['id'];
 
       await _client.from('notes').insert({
         'user_id': id,
         'title': titleC.text,
         'description': descriptionC.text,
         'created_at': DateTime.now().toIso8601String(),
-      }).execute();
+      });
+
       isLoading.value = false;
 
-      return true;
+      Get.back();
+
+      Get.snackbar(
+        'Success',
+        'Successfully added data',
+      );
+
+      await _homeC.getAllNotes();
     } else {
-      return false;
+      Get.snackbar(
+        'Warning',
+        'The field input cannot be empty!',
+      );
     }
   }
 }

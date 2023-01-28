@@ -1,35 +1,42 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../controllers/auth_controller.dart';
+import '../../../routes/app_pages.dart';
+
 class LoginController extends GetxController {
-  final TextEditingController emailC = TextEditingController();
-  final TextEditingController passwordC = TextEditingController();
+  final _client = Supabase.instance.client;
+  final _authC = Get.find<AuthController>();
+
+  final emailC = TextEditingController();
+  final passwordC = TextEditingController();
 
   RxBool isPasswordHidden = true.obs;
   RxBool isLoading = false.obs;
 
-  final SupabaseClient _client = Supabase.instance.client;
-
-  Future<bool> signIn() async {
+  Future<void> signIn() async {
     if (emailC.text.isNotEmpty && passwordC.text.isNotEmpty) {
       isLoading.value = true;
-      GotrueSessionResponse response = await _client.auth.signIn(
-        email: emailC.text,
-        password: passwordC.text,
-      );
-      isLoading.value = false;
 
-      if (response.error == null) {
-        if (kDebugMode) print(response.data?.toJson());
-        return true;
-      } else {
-        Get.snackbar('Error', response.error!.message);
+      try {
+        await _client.auth.signInWithPassword(
+          email: emailC.text,
+          password: passwordC.text,
+        );
+
+        await _authC.autoLogout();
+
+        isLoading.value = false;
+
+        Get.offAllNamed(Routes.home);
+      } on AuthException catch (e) {
+        isLoading.value = false;
+
+        Get.snackbar('Error', e.message);
       }
     } else {
       Get.snackbar('Warning', 'The field input cannot be empty!');
     }
-    return false;
   }
 }

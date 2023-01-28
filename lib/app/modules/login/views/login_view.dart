@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../controllers/auth_controller.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
-  LoginView({Key? key}) : super(key: key);
-
-  final _authC = Get.find<AuthController>();
+  const LoginView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,18 +54,14 @@ class LoginView extends GetView<LoginController> {
           const SizedBox(
             height: 16.0,
           ),
-          ElevatedButton(
-            onPressed: controller.isLoading.isTrue
-                ? null
-                : () async {
-                    bool? cekLogin = await controller.signIn();
-                    if (cekLogin == true) {
-                      await _authC.autoLogout();
-                      Get.offAllNamed(Routes.home);
-                    }
-                  },
-            child: Text(
-              controller.isLoading.isFalse ? 'Login' : 'Loading...',
+          Obx(
+            () => ElevatedButton(
+              onPressed: controller.isLoading.isTrue
+                  ? null
+                  : () async => await controller.signIn(),
+              child: Text(
+                controller.isLoading.isFalse ? 'Login' : 'Loading...',
+              ),
             ),
           ),
           const SizedBox(

@@ -5,7 +5,13 @@ class Note {
   String? description;
   String? createdAt;
 
-  Note({this.id, this.userId, this.title, this.description, this.createdAt});
+  Note({
+    this.id,
+    this.userId,
+    this.title,
+    this.description,
+    this.createdAt,
+  });
 
   Note.fromJson(Map<String, dynamic> json) {
     id = json['id'];

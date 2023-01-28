@@ -29,6 +29,7 @@ class HomeView extends GetView<HomeController> {
               child: CircularProgressIndicator(),
             );
           }
+
           return Obx(
             () => controller.allNotes.isEmpty
                 ? const Center(
@@ -49,7 +50,8 @@ class HomeView extends GetView<HomeController> {
                         title: Text('${note.title}'),
                         subtitle: Text('${note.description}'),
                         trailing: IconButton(
-                          onPressed: () => controller.deleteNote(note.id!),
+                          onPressed: () async =>
+                              await controller.deleteNote(note.id!),
                           icon: const Icon(Icons.delete),
                         ),
                       );
