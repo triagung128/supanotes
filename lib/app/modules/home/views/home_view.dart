@@ -59,10 +59,14 @@ class HomeView extends GetView<HomeController> {
                               color: blackColorOpacity75,
                             ),
                           ),
-                          title: Text(
-                            '${note.title}',
-                            style: bodyTextStyle.copyWith(
-                              fontWeight: FontWeight.w700,
+                          contentPadding: const EdgeInsets.all(16),
+                          title: Container(
+                            margin: const EdgeInsets.only(bottom: 8),
+                            child: Text(
+                              '${note.title}',
+                              style: bodyTextStyle.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
                           subtitle: Text(
