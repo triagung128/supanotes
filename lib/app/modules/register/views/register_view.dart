@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../routes/app_pages.dart';
+import '../../../utils/styles.dart';
 import '../controllers/register_controller.dart';
 
 class RegisterView extends GetView<RegisterController> {
@@ -10,12 +12,17 @@ class RegisterView extends GetView<RegisterController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register'),
-        centerTitle: true,
+        title: const Text('SUPANOTES'),
+        titleTextStyle: appBarTextStyle.copyWith(fontWeight: FontWeight.w900),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(24),
         children: [
+          Text(
+            'Sign Up',
+            style: titleTextStyle,
+          ),
+          const SizedBox(height: 24),
           TextField(
             textInputAction: TextInputAction.next,
             controller: controller.nameC,
@@ -23,12 +30,10 @@ class RegisterView extends GetView<RegisterController> {
             keyboardType: TextInputType.text,
             decoration: const InputDecoration(
               labelText: 'Name',
-              border: OutlineInputBorder(),
+              hintText: 'Input Your Name',
             ),
           ),
-          const SizedBox(
-            height: 10.0,
-          ),
+          const SizedBox(height: 12),
           TextField(
             textInputAction: TextInputAction.next,
             controller: controller.emailC,
@@ -36,12 +41,10 @@ class RegisterView extends GetView<RegisterController> {
             keyboardType: TextInputType.emailAddress,
             decoration: const InputDecoration(
               labelText: 'Email',
-              border: OutlineInputBorder(),
+              hintText: 'Input Your Email Address',
             ),
           ),
-          const SizedBox(
-            height: 10.0,
-          ),
+          const SizedBox(height: 12),
           Obx(
             () => TextField(
               textInputAction: TextInputAction.done,
@@ -51,7 +54,7 @@ class RegisterView extends GetView<RegisterController> {
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 labelText: 'Password',
-                border: const OutlineInputBorder(),
+                hintText: 'Password Min. 6 Characters',
                 suffixIcon: IconButton(
                   onPressed: () => controller.isPasswordHidden.toggle(),
                   icon: Icon(
@@ -63,9 +66,7 @@ class RegisterView extends GetView<RegisterController> {
               ),
             ),
           ),
-          const SizedBox(
-            height: 16.0,
-          ),
+          const SizedBox(height: 48),
           Obx(
             () => ElevatedButton(
               onPressed: controller.isLoading.isTrue
@@ -74,6 +75,14 @@ class RegisterView extends GetView<RegisterController> {
               child: Text(
                 controller.isLoading.isFalse ? 'Register' : 'Loading...',
               ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          TextButton(
+            onPressed: () => Get.offNamed(Routes.login),
+            child: Text(
+              'Already have an account? Sign in',
+              style: linkTextStyle,
             ),
           ),
         ],

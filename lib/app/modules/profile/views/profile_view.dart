@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../utils/styles.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
@@ -21,28 +22,26 @@ class ProfileView extends GetView<ProfileController> {
       ),
       body: FutureBuilder(
         future: controller.getProfile(),
-        builder: (context, snapshot) {
+        builder: (_, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
           return ListView(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(24),
             children: [
               TextField(
                 readOnly: true,
                 controller: controller.emailC,
                 autocorrect: false,
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Email',
-                  border: OutlineInputBorder(),
+                  fillColor: Colors.grey[200],
                 ),
               ),
-              const SizedBox(
-                height: 10.0,
-              ),
+              const SizedBox(height: 12),
               TextField(
                 textInputAction: TextInputAction.done,
                 controller: controller.nameC,
@@ -50,12 +49,10 @@ class ProfileView extends GetView<ProfileController> {
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   labelText: 'Name',
-                  border: OutlineInputBorder(),
+                  hintText: 'Input Name',
                 ),
               ),
-              const SizedBox(
-                height: 10.0,
-              ),
+              const SizedBox(height: 12),
               Obx(
                 () => TextField(
                   textInputAction: TextInputAction.done,
@@ -66,7 +63,6 @@ class ProfileView extends GetView<ProfileController> {
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       onPressed: () => controller.isPasswordHidden.toggle(),
                       icon: Icon(
@@ -78,24 +74,22 @@ class ProfileView extends GetView<ProfileController> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 16.0,
-              ),
-              const Text(
+              const SizedBox(height: 16),
+              Text(
                 'Last Login : ',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                style: bodyTextStyle.copyWith(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(
-                height: 6.0,
-              ),
+              const SizedBox(height: 6),
               Obx(
-                () => Text('${controller.lastLogin}'),
+                () => Text(
+                  '${controller.lastLogin}',
+                  style: bodyTextStyle,
+                ),
               ),
-              const SizedBox(
-                height: 32.0,
-              ),
+              const SizedBox(height: 48),
               Obx(
                 () => ElevatedButton(
                   onPressed: controller.isLoading.isTrue

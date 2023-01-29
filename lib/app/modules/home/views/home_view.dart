@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../data/models/note_model.dart';
 import '../../../routes/app_pages.dart';
+import '../../../utils/styles.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -12,8 +13,8 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
-        centerTitle: true,
+        title: const Text('SUPANOTES'),
+        titleTextStyle: appBarTextStyle.copyWith(fontWeight: FontWeight.w900),
         actions: [
           IconButton(
             onPressed: () => Get.toNamed(Routes.profile),
@@ -23,7 +24,7 @@ class HomeView extends GetView<HomeController> {
       ),
       body: FutureBuilder(
         future: controller.getAllNotes(),
-        builder: (context, snapshot) {
+        builder: (_, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -37,22 +38,37 @@ class HomeView extends GetView<HomeController> {
                   )
                 : ListView.builder(
                     itemCount: controller.allNotes.length,
-                    itemBuilder: (context, index) {
-                      Note note = controller.allNotes[index];
-                      return ListTile(
-                        onTap: () => Get.toNamed(
-                          Routes.editNote,
-                          arguments: note,
-                        ),
-                        leading: CircleAvatar(
-                          child: Text('${index + 1}'),
-                        ),
-                        title: Text('${note.title}'),
-                        subtitle: Text('${note.description}'),
-                        trailing: IconButton(
-                          onPressed: () async =>
+                    padding: const EdgeInsets.all(24),
+                    itemBuilder: (_, index) {
+                      final Note note = controller.allNotes[index];
+
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 9),
+                        child: ListTile(
+                          onTap: () => Get.toNamed(
+                            Routes.editNote,
+                            arguments: note,
+                          ),
+                          onLongPress: () async =>
                               await controller.deleteNote(note.id!),
-                          icon: const Icon(Icons.delete),
+                          tileColor: whiteColorOpacity75,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(
+                              width: 0.5,
+                              color: blackColorOpacity75,
+                            ),
+                          ),
+                          title: Text(
+                            '${note.title}',
+                            style: bodyTextStyle.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          subtitle: Text(
+                            '${note.description}',
+                            style: bodyTextStyle,
+                          ),
                         ),
                       );
                     },

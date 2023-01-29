@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../routes/app_pages.dart';
+import '../../../utils/styles.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
@@ -11,12 +12,17 @@ class LoginView extends GetView<LoginController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
-        centerTitle: true,
+        title: const Text('SUPANOTES'),
+        titleTextStyle: appBarTextStyle.copyWith(fontWeight: FontWeight.w900),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(24),
         children: [
+          Text(
+            'Sign In',
+            style: titleTextStyle,
+          ),
+          const SizedBox(height: 24),
           TextField(
             textInputAction: TextInputAction.next,
             controller: controller.emailC,
@@ -24,12 +30,10 @@ class LoginView extends GetView<LoginController> {
             keyboardType: TextInputType.emailAddress,
             decoration: const InputDecoration(
               labelText: 'Email',
-              border: OutlineInputBorder(),
+              hintText: 'Input Email',
             ),
           ),
-          const SizedBox(
-            height: 10.0,
-          ),
+          const SizedBox(height: 12),
           Obx(
             () => TextField(
               textInputAction: TextInputAction.done,
@@ -39,7 +43,7 @@ class LoginView extends GetView<LoginController> {
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 labelText: 'Password',
-                border: const OutlineInputBorder(),
+                hintText: 'Input Password',
                 suffixIcon: IconButton(
                   onPressed: () => controller.isPasswordHidden.toggle(),
                   icon: Icon(
@@ -51,9 +55,7 @@ class LoginView extends GetView<LoginController> {
               ),
             ),
           ),
-          const SizedBox(
-            height: 16.0,
-          ),
+          const SizedBox(height: 48),
           Obx(
             () => ElevatedButton(
               onPressed: controller.isLoading.isTrue
@@ -64,12 +66,13 @@ class LoginView extends GetView<LoginController> {
               ),
             ),
           ),
-          const SizedBox(
-            height: 8.0,
-          ),
+          const SizedBox(height: 8),
           TextButton(
-            onPressed: () => Get.toNamed(Routes.register),
-            child: const Text('Register'),
+            onPressed: () => Get.offNamed(Routes.register),
+            child: Text(
+              'Sign up with different email',
+              style: linkTextStyle,
+            ),
           ),
         ],
       ),

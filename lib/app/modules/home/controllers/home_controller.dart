@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -25,7 +26,23 @@ class HomeController extends GetxController {
   }
 
   Future<void> deleteNote(int id) async {
-    await _client.from('notes').delete().match({'id': id});
-    await getAllNotes();
+    Get.defaultDialog(
+      title: 'Warning',
+      middleText: 'Do you want to delete?',
+      actions: [
+        OutlinedButton(
+          onPressed: () async {
+            Get.back();
+            await _client.from('notes').delete().match({'id': id});
+            await getAllNotes();
+          },
+          child: const Text('Yes'),
+        ),
+        OutlinedButton(
+          onPressed: () => Get.back(),
+          child: const Text('No'),
+        ),
+      ],
+    );
   }
 }

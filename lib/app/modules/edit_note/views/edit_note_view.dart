@@ -20,41 +20,42 @@ class EditNoteView extends GetView<EditNoteController> {
         centerTitle: true,
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(24),
         children: [
           TextField(
             autocorrect: false,
             controller: controller.titleC,
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.text,
+            minLines: 1,
+            maxLines: null,
             decoration: const InputDecoration(
               labelText: 'Title',
-              border: OutlineInputBorder(),
+              hintText: 'Input Title',
             ),
           ),
-          const SizedBox(
-            height: 20.0,
-          ),
+          const SizedBox(height: 12),
           TextField(
             autocorrect: false,
             controller: controller.descriptionC,
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.text,
+            minLines: 5,
+            maxLines: null,
             decoration: const InputDecoration(
               labelText: 'Description',
-              border: OutlineInputBorder(),
+              hintText: 'Input Description',
+              alignLabelWithHint: true,
             ),
           ),
-          const SizedBox(
-            height: 20.0,
-          ),
+          const SizedBox(height: 48),
           Obx(
             () => ElevatedButton(
               onPressed: controller.isLoading.isTrue
                   ? null
                   : () async => await controller.editNote(_note.id!),
               child: Text(
-                controller.isLoading.isFalse ? 'Edit Note' : 'Loading',
+                controller.isLoading.isFalse ? 'Save' : 'Loading',
               ),
             ),
           ),
