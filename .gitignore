@@ -46,4 +46,5 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+/lib/key.dart
 db_password.txt
